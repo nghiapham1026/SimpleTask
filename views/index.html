@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Task Manager</title>
+</head>
+<body>
+    <h1>Add a Task</h1>
+    <form action="/tasks" method="POST">
+        <label for="description">Task Description:</label><br>
+        <input type="text" id="description" name="description" required><br><br>
+        
+        <label for="priority">Priority:</label><br>
+        <input type="text" id="priority" name="priority" required><br><br>
+        
+        <button type="submit">Add Task</button>
+    </form>
+</body>
+</html>
