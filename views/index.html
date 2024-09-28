@@ -13,6 +13,7 @@
 </head>
 <body>
     <h1>Add a Task</h1>
+    <h2>Enable Location For the Site to Fetch Local Weather Data</h2>
     <form action="/tasks" method="POST">
         <label for="description">Task Description:</label><br>
         <input type="text" id="description" name="description" required><br><br>
@@ -38,9 +39,17 @@
                 .then(response => response.json())
                 .then(data => {
                     const weatherInfo = `
-                        Location: ${data.name} <br>
-                        Temperature: ${data.main.temp}°C <br>
-                        Weather: ${data.weather[0].description}
+                        <strong>Location:</strong> ${data.name} <br>
+                        <strong>Temperature:</strong> ${data.main.temp}°C <br>
+                        <strong>Feels Like:</strong> ${data.main.feels_like}°C <br>
+                        <strong>Weather:</strong> ${data.weather[0].description} <br>
+                        <strong>Humidity:</strong> ${data.main.humidity}% <br>
+                        <strong>Pressure:</strong> ${data.main.pressure} hPa <br>
+                        <strong>Wind Speed:</strong> ${data.wind.speed} m/s <br>
+                        <strong>Wind Direction:</strong> ${data.wind.deg}° <br>
+                        <strong>Cloudiness:</strong> ${data.clouds.all}% <br>
+                        <strong>Sunrise:</strong> ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()} <br>
+                        <strong>Sunset:</strong> ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}
                     `;
                     document.getElementById('weather-info').innerHTML = weatherInfo;
                 })
