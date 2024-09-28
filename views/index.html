@@ -2,17 +2,72 @@
 <html>
 <head>
     <title>Simple Task Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #weather {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Add a Task</h1>
     <form action="/tasks" method="POST">
         <label for="description">Task Description:</label><br>
         <input type="text" id="description" name="description" required><br><br>
-        
+
         <label for="priority">Priority:</label><br>
         <input type="text" id="priority" name="priority" required><br><br>
-        
+
         <button type="submit">Add Task</button>
     </form>
+
+    <div id="weather">
+        <h2>Current Weather</h2>
+        <p id="weather-info">Fetching weather data...</p>
+    </div>
+
+    <script>
+        // Function to fetch weather data
+        function getWeather(latitude, longitude) {
+            const apiKey = 'ac9d2f5b8de3dfec9993620d5c14ecca'; // Replace with your OpenWeather API key
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${apiKey}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const weatherInfo = `
+                        Location: ${data.name} <br>
+                        Temperature: ${data.main.temp}°C <br>
+                        Weather: ${data.weather[0].description}
+                    `;
+                    document.getElementById('weather-info').innerHTML = weatherInfo;
+                })
+                .catch(error => {
+                    document.getElementById('weather-info').innerHTML = 'Failed to fetch weather data.';
+                    console.error('Error fetching weather data:', error);
+                });
+        }
+
+        // Function to get the user's location
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    getWeather(latitude, longitude);
+                }, error => {
+                    document.getElementById('weather-info').innerHTML = 'Unable to retrieve your location.';
+                    console.error('Geolocation error:', error);
+                });
+            } else {
+                document.getElementById('weather-info').innerHTML = 'Geolocation is not supported by your browser.';
+            }
+        }
+
+        // Call the function to get location on page load
+        window.onload = getLocation;
+    </script>
 </body>
 </html>
